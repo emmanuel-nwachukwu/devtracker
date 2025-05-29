@@ -1,18 +1,13 @@
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-// type HeaderType = {
-//   headers:
-// }
-const defaultHeaders: HeadersInit = GITHUB_TOKEN
+
+const headers: HeadersInit = GITHUB_TOKEN
   ? {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github+json",
     }
   : {};
 
-const fetchGitHubUser = async (
-  username: string,
-  headers: HeadersInit = defaultHeaders
-) => {
+const fetchGitHubUser = async (username: string) => {
   const res = await fetch(` https://api.github.com/users/${username}`, {
     headers,
   });
@@ -20,7 +15,7 @@ const fetchGitHubUser = async (
   return res.json();
 };
 
-const fetchGitHubRepos = async (username: string, headers: HeadersInit) => {
+const fetchGitHubRepos = async (username: string) => {
   const res = await fetch(` https://api.github.com/users/${username}/repos`, {
     headers,
   });

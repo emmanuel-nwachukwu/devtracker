@@ -115,7 +115,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
           {/* Repos List */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold mb-2">Repositories</h3>
-            {repos.map((repo) => (
+            {filteredRepos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
