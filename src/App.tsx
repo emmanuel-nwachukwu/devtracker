@@ -2,8 +2,10 @@ import { useState, type FormEvent } from "react";
 import "./App.css";
 import Profile from "./components/Profile";
 
+const defaultUsername = import.meta.env.VITE_GITHUB_DEFAULT_USERNAME;
+
 function App() {
-  const [username, setUsername] = useState("emmanuel-nwachukwu");
+  const [username, setUsername] = useState(defaultUsername);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -12,10 +14,13 @@ function App() {
     console.log(username);
     if (input.trim()) {
       setUsername(input.trim());
+    } else {
+      setUsername(defaultUsername);
     }
     console.log(username);
     setLoading(false);
   };
+
   return (
     <div className="min-h-screen bg-gray-100 p-6 text-black">
       <form

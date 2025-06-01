@@ -35,7 +35,10 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   }, [username, setLoading]);
 
   if (error) return <p>Error: {error}</p>;
-  if (!user || loading) return <p>Loading...</p>;
+  if (!user || loading)
+    return (
+      <p className="max-w-md mx-auto p-4 shadow rounded bg-white">Loading...</p>
+    );
   // if (loading) return <p>Loading...</p>;
 
   // Derived list
@@ -67,7 +70,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   return (
     <div className="max-w-2xl mx-auto">
       {loading ? (
-        <p>Loading...</p>
+        <p className="p-4 shadow rounded bg-white">Loadinggvhjnjcg...</p>
       ) : (
         <div className="w-full">
           {/* User Profile */}
