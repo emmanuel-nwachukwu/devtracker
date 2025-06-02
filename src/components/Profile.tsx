@@ -1,7 +1,9 @@
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
-import type { GitHubRepo, GitHubUser } from "../types/github";
+import type { GitHubRepo, GitHubUser, LanguageStat } from "../types/github";
 import { fetchGitHubRepos, fetchGitHubUser } from "../services/github";
 import RepoCard from "./RepoCard";
+import { fetchUserLanguages } from "../services/githubGraphQL";
+import LanguagePieChart from "./LanguagePieChart";
 
 // const GITHUB_USERNAME = "emmanuel-nwachukwu";
 type ProfileProps = {
@@ -17,6 +19,21 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   const [sortKey, setSortKey] = useState("stars");
   const [languageFilter, setLanguageFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [languageStats, setLanguageStats] = useState<LanguageStat[]>([]);
+  const [loadingLangStats, setLoadingLangStats] = useState(false);
+  const [langError, setLangError] = useState("");
+
+  useEffect(() => {
+    if (!username) return;
+
+    setLoadingLangStats(true);
+    setLangError("");
+
+    fetchUserLanguages(username)
+      .then((stats) => setLanguageStats(stats))
+      .catch((err) => setLangError(err.message))
+      .finally(() => setLoadingLangStats(false));
+  }, [username]);
 
   // page Resetter useEffect
   useEffect(() => {
@@ -163,6 +180,12 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
+
+          {loadingLangStats && <p>Loading language stats...</p>}
+          {langError && <p className="text-red-500">Error: {langError}</p>}
+          {languageStats.length > 0 && (
+            <LanguagePieChart data={languageStats} />
+          )}
 
           {/* Pagination */}
           <div className="flex justify-center gap-4 mt-6">
