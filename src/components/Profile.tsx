@@ -18,6 +18,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   const [languageFilter, setLanguageFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  // page Resetter useEffect
   useEffect(() => {
     setCurrentPage(1);
   }, [sortKey, languageFilter]);
@@ -62,9 +63,11 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
           // Most forks first.
           return b.forks_count - a.forks_count;
         case "name":
+          // Return all in alphabetical order A-z.
           return a.name.localeCompare(b.name);
         case "updated":
           return (
+            // Latest date first.
             new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
           );
         default:
@@ -87,6 +90,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
     { value: "updated", label: "Sort by Last Updated" },
   ];
 
+  // Pagination logic page Resetter useEffect above
   const perPage = 5;
   const totalPages = Math.ceil(filteredRepos.length / perPage);
   const paginatedRepos = filteredRepos.slice(
@@ -161,21 +165,23 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
           </div>
 
           {/* Pagination */}
-          <div>
+          <div className="flex justify-center gap-4 mt-6">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
               className="pageBtn">
-              prev
+              {currentPage === 1 ? "start" : "prev"}
             </button>
-            <span>
+            <span className="p-2 text-sm text-gray-700">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
+              disabled={currentPage === totalPages}
               className="pageBtn">
-              next
+              {currentPage === totalPages ? "end" : "next"}
             </button>
           </div>
         </div>
