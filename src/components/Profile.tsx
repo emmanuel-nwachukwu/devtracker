@@ -16,6 +16,11 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [sortKey, setSortKey] = useState("stars");
   const [languageFilter, setLanguageFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortKey, languageFilter]);
 
   useEffect(() => {
     setUser(null);
@@ -43,14 +48,18 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
 
   // Derived list
   const filteredRepos = repos
+    // Derived list Filtering
     .filter(
       (repo) => languageFilter === "All" || repo.language === languageFilter
     )
+    // Derived list Sorting
     .sort((a, b) => {
       switch (sortKey) {
         case "stars":
+          // Most stars first.
           return b.stargazers_count - a.stargazers_count;
         case "forks":
+          // Most forks first.
           return b.forks_count - a.forks_count;
         case "name":
           return a.name.localeCompare(b.name);
@@ -65,6 +74,24 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
 
   const uniqueLanguages = Array.from(
     new Set(repos.map((repo) => repo.language).filter(Boolean))
+  );
+
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [sortKey, languageFilter]);
+
+  const sortOptions = [
+    { value: "stars", label: "Sort by Stars" },
+    { value: "forks", label: "Sort by Forks" },
+    { value: "name", label: "Sort by Name" },
+    { value: "updated", label: "Sort by Last Updated" },
+  ];
+
+  const perPage = 5;
+  const totalPages = Math.ceil(filteredRepos.length / perPage);
+  const paginatedRepos = filteredRepos.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
   );
 
   return (
@@ -92,7 +119,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
 
           {/* Sort & Filter Controls */}
           <div className="flex flex-wrap items-center justify-between my-4 gap-2">
-            <select
+            {/* <select
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
               className="p-2 border rounded">
@@ -100,6 +127,16 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
               <option value="forks">Sort by Forks</option>
               <option value="name">Sort by Name</option>
               <option value="updated">Sort by Last Updated</option>
+            </select> */}
+            <select
+              value={sortKey}
+              onChange={(e) => setSortKey(e.target.value)}
+              className="p-2 border rounded">
+              {sortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
 
             <select
@@ -118,9 +155,28 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
           {/* Repos List */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold mb-2">Repositories</h3>
-            {filteredRepos.map((repo) => (
+            {paginatedRepos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} />
             ))}
+          </div>
+
+          {/* Pagination */}
+          <div>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="pageBtn">
+              prev
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              className="pageBtn">
+              next
+            </button>
           </div>
         </div>
       )}

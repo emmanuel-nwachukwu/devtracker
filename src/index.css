@@ -14,3 +14,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* .pageBtn {
+  padding: 0.5rem;
+  background-color: gray;
+} */
+
+@layer components {
+  .pageBtn {
+    @apply px-4 py-2 bg-gray-200 rounded disabled:opacity-50;
+  }
+}
