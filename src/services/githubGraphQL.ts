@@ -1,4 +1,4 @@
-import type { LanguageStat } from "../types/github";
+import type { LanguageStat, ReqType } from "../types/github";
 
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
@@ -59,22 +59,23 @@ async function fetchUserLanguages(username: string): Promise<LanguageStat[]> {
         }
     `;
 
-  const data = await graphqlRequest<{
-    user: {
-      repositories: {
-        edges: {
-          edges: {
-            node: {
-              languages: {
-                edges: { name: string; color: string };
-                size: number;
-              }[];
-            };
-          };
-        }[];
-      };
-    };
-  }>(query, { login: username });
+  // const data = await graphqlRequest<{
+  //   user: {
+  //     repositories: {
+  //       edges: {
+  //         node: {
+  //           languages: {
+  //             edges: { node: { name: string; color: string }; size: number }[];
+  //           };
+  //         };
+  //       }[];
+  //     };
+  //   };
+  // }>(query, { login: username });
+
+  const data = await graphqlRequest<ReqType>(query, {
+    login: username,
+  });
 
   // Aggregate language sizes
   const langMap = new Map<string, { color: string; size: number }>();

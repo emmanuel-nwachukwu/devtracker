@@ -19,9 +19,11 @@ type Props = {
 
 const LanguagePieChart = ({ data }: Props) => {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <PieChart>
+    <ResponsiveContainer width="100%" height={450}>
+      <PieChart >
         <Pie
+          // style={{ cursor: "pointer" }}
+          className="pointer-cursor"
           dataKey="size"
           data={data}
           nameKey="name"

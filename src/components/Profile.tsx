@@ -4,6 +4,7 @@ import { fetchGitHubRepos, fetchGitHubUser } from "../services/github";
 import RepoCard from "./RepoCard";
 import { fetchUserLanguages } from "../services/githubGraphQL";
 import LanguagePieChart from "./LanguagePieChart";
+import { RingLoader, RiseLoader, SkewLoader } from "react-spinners";
 
 // const GITHUB_USERNAME = "emmanuel-nwachukwu";
 type ProfileProps = {
@@ -60,7 +61,10 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   if (error) return <p>Error: {error}</p>;
   if (!user || loading)
     return (
-      <p className="max-w-md mx-auto p-4 shadow rounded bg-white">Loading...</p>
+      // <p className="max-w-md mx-auto p-4 shadow rounded bg-white">Loading...</p>
+      <div className="h-[90vh] w-full flex items-center justify-center my-6">
+        <RingLoader color="red" size={150} />
+      </div>
     );
   // if (loading) return <p>Loading...</p>;
 
@@ -116,13 +120,19 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="min-w-[260px] max-w-7xl mx-auto bg-white p-4 xs-profile-container border-transparent rounded-md shadow-xl">
       {loading ? (
-        <p className="p-4 shadow rounded bg-white">Loadinggvhjnjcg...</p>
+        <RiseLoader color="black" size={40} />
       ) : (
         <div className="w-full">
           {/* User Profile */}
-          <div className="p-4 shadow rounded bg-white mt-6">
+          <div className="p-4 shadow rounded sm:mt-6 relative">
+            <div className="absolute top-4 left-4">
+              <SkewLoader />
+            </div>
+            <div className="absolute top-4 right-4">
+              <SkewLoader />
+            </div>
             <img
               src={user.avatar_url}
               alt={user.login}
@@ -152,7 +162,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
             <select
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
-              className="p-2 border rounded">
+              className="p-2 border rounded cursor-pointer">
               {sortOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -163,7 +173,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
             <select
               value={languageFilter}
               onChange={(e) => setLanguageFilter(e.target.value)}
-              className="p-2 border rounded">
+              className="p-2 border rounded cursor-pointer">
               <option value="All">All languages</option>
               {uniqueLanguages.map((lang) => (
                 <option key={lang} value={lang}>
@@ -174,14 +184,20 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
           </div>
 
           {/* Repos List */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">Repositories</h3>
+          <div className="my-12 space-y-5">
+            <h2 className="text-2xl font-semibold mb-2">Repositories</h2>
             {paginatedRepos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
 
-          {loadingLangStats && <p>Loading language stats...</p>}
+          {/* GraphQl guys */}
+          {loadingLangStats && (
+            // <p>Loading language stats...</p>
+            <div className="text-center my-12">
+              <RiseLoader color="black" size={30} />
+            </div>
+          )}
           {langError && <p className="text-red-500">Error: {langError}</p>}
           {languageStats.length > 0 && (
             <LanguagePieChart data={languageStats} />

@@ -43,4 +43,19 @@ type LanguageBreakdown = {
   };
 };
 
-export { GitHubUser, GitHubRepo, LanguageBreakdown, LanguageStat };
+// For GraphQL
+type ReqType = {
+  user: {
+    repositories: {
+      edges: {
+        node: {
+          languages: {
+            edges: { node: { name: string; color: string }; size: number }[];
+          };
+        };
+      }[];
+    };
+  };
+}
+
+export { GitHubUser, GitHubRepo, LanguageBreakdown, LanguageStat, ReqType };

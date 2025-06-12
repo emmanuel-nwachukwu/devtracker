@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { GitHubRepo } from "../types/github";
 
 type RepoCardProps = {
@@ -6,8 +6,16 @@ type RepoCardProps = {
 };
 
 export default function RepoCard({ repo }: RepoCardProps) {
+  const navigate = useNavigate();
+
+  const OnRepoContainerClick = () => {
+    navigate(`/repo/${repo.owner.login}/${repo.name}`);
+  };
+
   return (
-    <div>
+    <div
+      className="flex flex-col bg-gray-100 hover:bg-gray-300 p-2 rounded shadow cursor-pointer"
+      onClick={OnRepoContainerClick}>
       {/* <a
         href={repo.html_url}
         target="_blank"
@@ -21,7 +29,7 @@ export default function RepoCard({ repo }: RepoCardProps) {
         {repo.name}
       </Link>
       {repo.description && (
-        <p className="text-sm text-gray-700 mt-1">{repo.description}</p>
+        <p className="text-sm text-gray-700">{repo.description}</p>
       )}
 
       <div className="flex gap-4 text-sm text-gray-600 mt-2">
