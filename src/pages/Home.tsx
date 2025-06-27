@@ -21,7 +21,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen p-2 sm:p-6 text-black">
+    <div className="min-h-screen p-2 px-4 sm:p-6 text-black">
       <h1 className="font-bold text-3xl">DevTracker</h1>
       <form
         onSubmit={handleSearch}
