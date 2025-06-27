@@ -61,7 +61,7 @@ body {
 
 @layer components {
   .pageBtn {
-    @apply px-4 py-2 bg-gray-200 rounded disabled:opacity-50 cursor-pointer;
+    @apply px-4 py-2 bg-gray-100 rounded disabled:opacity-50 cursor-pointer;
   }
 }
 
