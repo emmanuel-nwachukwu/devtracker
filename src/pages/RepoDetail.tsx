@@ -31,7 +31,7 @@ const RepoDetail = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <h1 className="font-bold text-3xl absolute left-10 top-10">DevTracker</h1>
+      <h1 className="font-bold text-3xl absolute left-8 top-5">DevTracker</h1>
       <div className="px-10 mt-20">
         <h1 className="text-2xl font-bold">{repo.full_name}</h1>
         <p className="mt-2 text-gray-700 text-lg font-semibold">
