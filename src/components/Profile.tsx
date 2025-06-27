@@ -120,7 +120,7 @@ const Profile = ({ username = "", loading, setLoading }: ProfileProps) => {
   );
 
   return (
-    <div className="min-w-[260px] max-w-7xl mx-auto bg-white p-4 xs-profile-container border-transparent rounded-xl shadow-2xl shadow-black">
+    <div className="min-w-[260px] max-w-7xl mx-auto mb-6 bg-white p-4 xs-profile-container border-transparent rounded-xl shadow-2xl shadow-black">
       {loading ? (
         <RiseLoader color="black" size={40} />
       ) : (
