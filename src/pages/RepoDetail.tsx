@@ -34,7 +34,9 @@ const RepoDetail = () => {
       <h1 className="font-bold text-3xl absolute left-10 top-10">DevTracker</h1>
       <div className="px-10 mt-20">
         <h1 className="text-2xl font-bold">{repo.full_name}</h1>
-        <p className="mt-2 text-gray-700">{repo.description}</p>
+        <p className="mt-2 text-gray-700 text-lg font-semibold">
+          {repo.description}
+        </p>
         <div className="mt-4 text-sm text-gray-600">
           <p>⭐ Stars: {repo.stargazers_count}</p>
           <p>🍴 Forks: {repo.forks_count}</p>
@@ -43,7 +45,7 @@ const RepoDetail = () => {
             🔗{" "}
             <a
               href={repo.html_url}
-              className="text-blue-500 underline"
+              className="text-blue-500 underline text-lg font-bold"
               target="_blank">
               View on GitHub
             </a>
